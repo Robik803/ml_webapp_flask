@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        form { margin-top: 20px; }
+        input { margin: 10px; padding: 5px; }
+        button { padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Diabetes Prediction Model</h1>
+    <form action="/predict" method="post">
+        <label for="glucose">Fasting Blood Glucose:</label>
+        <input type="number" id="glucose" name="glucose" required>
+        <br>
+        <label for="hba1c">HbA1c:</label>
+        <input type="number" id="hba1c" name="hba1c" required step="0.1">
+        <br>
+        <button type="submit">Predict</button>
+    </form>
+    <h2 id="result"></h2>
+    <script>
+document.querySelector("form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const glucose = document.getElementById("glucose").value;
+    const hba1c = document.getElementById("hba1c").value;
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ glucose: parseFloat(glucose), hba1c: parseFloat(hba1c) })
+    });
+
+    const data = await response.json();
+    document.getElementById("result").innerText = "Resultado: " + (data.prediction || "Error en la predicción");
+});
+    </script>
+</body>
+</html>
