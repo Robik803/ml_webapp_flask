@@ -34,7 +34,7 @@ def predict():
         input_data = np.array([[glucose, hba1c]])
         
         proba = model.predict_proba(input_data)[:, 1]
-        result = ["Positivo" if p >= 0.7 else "Negativo" for p in proba]
+        result = ["Positive" if p >= 0.7 else "Negative" for p in proba]
 
         return jsonify({"prediction": result})
 
